@@ -1,35 +1,108 @@
 "use client";
-import React, { useRef, useState } from "react";
-import Button from "@/app/components/Button";
-import { ImagePlus, BotMessageSquare, Image } from "lucide-react";
 
-export default function AdForm() {
-  const [adImage, setAdImage] = useState<string | null>(null);
+import React, { useRef, useState } from "react";
+import axios from "axios";
+import Button from "@/app/components/Button";
+import { ImagePlus, BotMessageSquare, Image, Download } from "lucide-react";
+import { generateAdCreative } from "@/lib/openai";
+import { putObjectUrl } from "@/lib/aws";
+import { useUserStore } from "@/store/user-store";
+import { useCreativeStore } from "@/store/creative-store";
+
+export default function AdForm({
+  adImage,
+  setAdImage,
+}: {
+  adImage: string | null;
+  setAdImage: (image: string | null) => void;
+}) {
+  const { user } = useUserStore();
+  const { createCreative } = useCreativeStore();
   const [productImage, setProductImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState("");
-
+  const [generatedAd, setGeneratedAd] = useState<string | null>(null);
   const adInputRef = useRef<HTMLInputElement>(null);
   const productInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setAdImage(url);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        console.log(base64String);
+        setAdImage(base64String);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleProductImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setProductImage(url);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setProductImage(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGenerateAd = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (!adImage || !productImage) {
+      alert("Please upload both ad creative and product image");
+      return;
+    }
+
+    console.log("calling openai");
+
+    const generatedAd = await generateAdCreative(adImage, productImage, prompt);
+
+    if (generatedAd) {
+      setGeneratedAd(URL.createObjectURL(generatedAd));
+    }
+
+    const creativeId = crypto.randomUUID();
+
+    const awsS3Url = await putObjectUrl(user.id, creativeId, "image/png");
+
+    try {
+      const awsResponse = await axios.put(awsS3Url, generatedAd, {
+        headers: {
+          "Content-Type": "image/png",
+        },
+      });
+
+      console.log(awsResponse.data);
+
+      createCreative({
+        id: creativeId,
+        userId: user.id,
+        prompt: prompt || "",
+      });
+
+      // create a creative store in zustand and store this inside it.
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
     <div className="flex justify-between gap-6">
-      <form className="flex flex-col gap-6 w-1/2">
+      <form
+        className="flex flex-col gap-6 w-1/2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleGenerateAd();
+        }}
+      >
         <div className="w-full flex gap-6">
           <div
             className={`w-1/2 h-60 flex items-center justify-center rounded-lg border-2 ${
@@ -50,7 +123,7 @@ export default function AdForm() {
               <img
                 src={adImage}
                 alt="Ad Image"
-                className="object-cover w-full h-full rounded-lg"
+                className="object-contain w-full h-full rounded-lg"
               />
             ) : (
               <span className="text-zinc-500 text-sm text-center flex flex-col items-center gap-2">
@@ -78,7 +151,7 @@ export default function AdForm() {
               <img
                 src={productImage}
                 alt="Product Image"
-                className="object-cover w-full h-full rounded-lg"
+                className="object-contain w-full h-full rounded-lg"
               />
             ) : (
               <span className="text-zinc-500 text-sm text-center flex flex-col items-center gap-2">
@@ -106,17 +179,48 @@ export default function AdForm() {
           />
         </div>
         <div className="flex items-center justify-between">
-          <Button className="flex items-center gap-2 bg-gradient-to-br from-neutral-800 via-slate-900 to-blue-900">
+          <Button
+            className="flex items-center gap-2 bg-gradient-to-br from-neutral-800 via-slate-900 to-blue-900"
+            onClick={(e) => {
+              e.preventDefault();
+              handleGenerateAd();
+            }}
+          >
             Generate
             <ImagePlus className="w-4 h-4" />
           </Button>
         </div>
       </form>
       <div className="w-1/2 flex items-center justify-center">
-        <div className="w-full h-full rounded-lg border-2 border-dashed border-zinc-600 flex items-center justify-center">
-          <span className="text-zinc-500 text-sm">
-            Generated Ad will appear here
-          </span>
+        <div className="w-11/12 h-11/12 rounded-lg border-2 border-dashed border-zinc-600 flex items-center justify-center relative">
+          {generatedAd ? (
+            <>
+              <img
+                src={generatedAd}
+                alt="Generated Ad"
+                className="object-contain w-full h-full rounded-lg"
+              />
+              <Button
+                onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = generatedAd;
+                  link.download = "generated-ad.png";
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                variant="dark"
+                className="absolute bottom-4 right-4 flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Download
+              </Button>
+            </>
+          ) : (
+            <span className="text-zinc-500 text-sm">
+              Generated Ad will appear here
+            </span>
+          )}
         </div>
       </div>
     </div>

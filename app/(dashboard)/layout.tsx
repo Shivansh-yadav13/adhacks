@@ -4,6 +4,7 @@ import "../globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { Sidebar } from "../components/dashboard/Sidebar";
+import { UserDataProvider } from "@/contexts/user-data-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,10 +28,12 @@ export default function DasboardLayout({
           className={`${inter.variable} antialiased`}
           style={{ fontFamily: "var(--font-inter), sans-serif" }}
         >
-          <div className="flex">
-            <Sidebar />
-            {children}
-          </div>
+          <UserDataProvider>
+            <div className="flex">
+              <Sidebar />
+              {children}
+            </div>
+          </UserDataProvider>
         </body>
       </html>
     </ClerkProvider>

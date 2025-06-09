@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import MasonryGrid from "@/app/components/dashboard/MasonryGrid";
 import AdForm from "@/app/components/dashboard/AdForm";
-import { Telescope } from "lucide-react";
+import { Telescope, WandSparkles } from "lucide-react";
 import { useUserStore } from "@/store/user-store";
 import CreditsBadge from "@/app/components/dashboard/CreditsBadge";
 
@@ -67,15 +67,19 @@ const images = [
   },
 ];
 export default function Dashboard() {
+  const [adImage, setAdImage] = useState<string | null>(null);
   const { user } = useUserStore();
 
   return (
     <div className="flex flex-col gap-4 w-full p-4 m-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-semibold">Create Ad</h2>
+        <h2 className="text-3xl font-semibold flex items-center gap-2">
+          <WandSparkles className="w-6 h-6" />
+          Create Ad
+        </h2>
         <CreditsBadge credits={user?.credits || 0} />
       </div>
-      <AdForm />
+      <AdForm adImage={adImage} setAdImage={setAdImage} />
       <div className="flex items-center justify-between my-4 border-t border-zinc-900 pt-4">
         <div className="flex flex-col gap-2">
           <h3 className="text-3xl font-semibold flex items-center gap-2">
@@ -88,7 +92,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="border-2 border-zinc-900 bg-zinc-900 rounded-lg overflow-y-scroll h-[calc(100vh-100px)]">
-        <MasonryGrid images={images} />
+        <MasonryGrid images={images} setAdImage={setAdImage} />
       </div>
     </div>
   );

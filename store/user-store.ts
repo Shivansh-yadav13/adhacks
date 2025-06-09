@@ -37,7 +37,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   createUser: async (user: User) => {
     try {
-      const createdUser = await axios.post("/api/create-user", user);
+      const createdUser = await axios.post("/api/user/create", user);
       set({ user: createdUser.data });
     } catch (error) {
       console.error("Failed to create user", error);
@@ -62,7 +62,6 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   clearUser: () => set({ user: null }),
 }));
-
 // updateUser: async (id: string, data: Partial<User>) => {
 //   try {
 //     const updatedUser = await prisma.user.update({

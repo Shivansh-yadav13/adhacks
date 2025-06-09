@@ -22,8 +22,7 @@ model User {
 }
 
 model Creative {
-  id        String   @id @default(uuid())
-  imgUrl    String
+  id        String   @id
   prompt    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -11,8 +11,12 @@ import {
   Coins,
   Sparkles,
   Plus,
+  LayoutDashboard,
+  Image as ImageIcon,
+  Settings,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Button from "@/app/components/Button";
 
 const links = [
   {
@@ -30,6 +34,8 @@ const links = [
 export const Sidebar = () => {
   const { user } = useUserStore();
   const pathname = usePathname();
+
+  console.log(user);
 
   return (
     <div className="sticky top-0 left-0 h-screen w-64 border-r border-zinc-900 flex flex-col p-6">
@@ -69,13 +75,20 @@ export const Sidebar = () => {
 
         {/* Credits Section */}
         <div className="mt-auto mb-6">
-          <div className="bg-zinc-900 rounded-lg p-4">
-            <p className="text-sm text-zinc-400 mb-1 flex items-center gap-2">
-              <Coins className="w-4 h-4" /> Available Credits
-            </p>
-            <p className="text-2xl font-bold text-white">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
+            <p className="text-md text-zinc-400 mb-1 flex items-center gap-2">
+              <Coins className="w-4 h-4" /> Available Credits:{" "}
               {user?.credits || 0}
             </p>
+            <p className="text-2xl font-bold text-white mb-3"></p>
+            <Button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-sm"
+              onClick={() => {
+                // TODO: Implement add credits functionality
+              }}
+            >
+              Add Credits
+            </Button>
           </div>
         </div>
 
