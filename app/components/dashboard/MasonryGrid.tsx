@@ -28,7 +28,6 @@ export default function MasonryGrid({ images, setAdImage }: MasonryGridProps) {
 
       reader.onloadend = () => {
         const base64data = reader.result as string;
-        console.log("base64 from ad image", base64data);
         setAdImage(base64data);
       };
 

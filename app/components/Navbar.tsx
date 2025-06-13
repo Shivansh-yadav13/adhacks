@@ -1,7 +1,10 @@
+"use client";
+
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { motion } from "motion/react";
 
 const navItems = [
   {
@@ -24,7 +27,15 @@ const navItems = [
 
 const Navbar = () => {
   return (
-    <nav className="sticky top-8 z-50 w-fit bg-zinc-900/10 rounded-full my-8 mx-auto backdrop-blur-3xl shadow-[inset_0_2px_2px_0_rgba(255,255,255,0.2)] flex justify-between gap-8 items-center px-12 py-2">
+    <motion.nav
+      className="sticky top-8 z-50 w-fit bg-zinc-900/10 rounded-full my-8 mx-auto backdrop-blur-3xl shadow-[inset_0_2px_2px_0_rgba(255,255,255,0.2)] flex justify-between gap-8 items-center px-12 py-2"
+      initial={{ y: -100, opacity: 0, filter: "blur(10px)" }}
+      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+      transition={{
+        duration: 0.8,
+        ease: [0.4, 0, 0.2, 1],
+      }}
+    >
       <div className="flex items-center text-lg font-medium">
         {navItems.slice(0, 2).map((item, idx) => (
           <React.Fragment key={item.label}>
@@ -74,7 +85,7 @@ const Navbar = () => {
           </React.Fragment>
         ))}
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

@@ -1,13 +1,15 @@
+"use client";
 import React from "react";
 import clsx from "clsx";
+import { motion, HTMLMotionProps } from "motion/react";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
   variant?: "primary" | "light" | "dark";
   children: React.ReactNode;
 }
 
 const baseStyles =
-  "cursor-pointer px-6 py-2 rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300 backdrop-blur-md shadow-md text-lg";
+  "cursor-pointer px-6 py-2 rounded-full font-medium transition-colors focus:outline-none backdrop-blur-md shadow-md text-lg";
 
 const variantStyles = {
   primary:
@@ -24,12 +26,20 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <button
+    <motion.button
       className={clsx(baseStyles, variantStyles[variant], className)}
+      initial={{ y: 20, opacity: 0, filter: "blur(10px)" }}
+      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{
+        duration: 0.8,
+        ease: [0.4, 0, 0.2, 1],
+      }}
       {...props}
     >
       {children}
-    </button>
+    </motion.button>
   );
 };
 

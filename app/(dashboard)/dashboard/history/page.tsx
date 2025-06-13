@@ -1,14 +1,24 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { History, Download, RefreshCw } from "lucide-react";
 import { useUserStore } from "@/store/user-store";
 import CreditsBadge from "@/app/components/dashboard/CreditsBadge";
 import { useCreativeStore } from "@/store/creative-store";
 import Button from "@/app/components/Button";
+import { motion } from "motion/react";
 
 export default function HistoryPage() {
+  const [isRotating, setIsRotating] = useState(false);
   const { user } = useUserStore();
   const { creatives, fetchCreatives } = useCreativeStore();
+
+  const handleOnRefresh = () => {
+    if (user) {
+      setIsRotating(true);
+      fetchCreatives(user.id);
+      setTimeout(() => setIsRotating(false), 5000);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -27,11 +37,20 @@ export default function HistoryPage() {
             History
           </h2>
           <Button
+            disabled={isRotating}
             variant="dark"
-            onClick={() => user && fetchCreatives(user.id)}
+            onClick={handleOnRefresh}
             className="flex items-center gap-2 text-sm"
           >
-            <RefreshCw className="w-5 h-5" />
+            <motion.span
+              animate={isRotating ? { rotate: 360 * 5 } : { rotate: 0 }}
+              transition={
+                isRotating ? { duration: 5, ease: "linear" } : { duration: 0 }
+              }
+              style={{ display: "inline-block" }}
+            >
+              <RefreshCw className="w-5 h-5" />
+            </motion.span>
             Refresh
           </Button>
         </div>

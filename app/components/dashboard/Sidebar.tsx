@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "@/app/components/Button";
+import { useClerk } from "@clerk/nextjs";
 
 const links = [
   {
@@ -32,6 +33,7 @@ const links = [
 ];
 
 export const Sidebar = () => {
+  const { signOut } = useClerk();
   const { user } = useUserStore();
   const pathname = usePathname();
   const router = useRouter();
@@ -81,8 +83,7 @@ export const Sidebar = () => {
         <div className="mt-auto mb-6">
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
             <p className="text-md text-zinc-400 mb-1 flex items-center gap-2">
-              <Coins className="w-4 h-4" /> Available Credits:{" "}
-              {user?.credits || 0}
+              <Coins className="w-4 h-4" /> Credits: {user?.credits || 0}
             </p>
             <p className="text-2xl font-bold text-white mb-3"></p>
             <Button
@@ -123,7 +124,7 @@ export const Sidebar = () => {
             <button
               className="text-zinc-400 hover:text-white transition-colors duration-200"
               onClick={() => {
-                /* Add logout handler */
+                signOut({ redirectUrl: "/" });
               }}
             >
               <LogOut className="w-5 h-5" />

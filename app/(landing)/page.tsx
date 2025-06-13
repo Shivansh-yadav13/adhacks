@@ -16,11 +16,15 @@ export default function Home() {
           <p className="text-lg text-slate-400">
             Get Inspired from our database of 100+ Winning Creatives
           </p>
-          <CreativesCarousel />
-          {/* <VerticalCarousel /> */}
-          <Pricing />
-          {/* <BuyCreditsPage /> */}
-          <CallToAction />
+          <div>
+            <CreativesCarousel />
+          </div>
+          <div>
+            <Pricing />
+          </div>
+          <div>
+            <CallToAction />
+          </div>
         </div>
       </div>
     </div>
