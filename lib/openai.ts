@@ -12,21 +12,31 @@ const generateAdCreative = async (
 ) => {
   console.log("Generating Ad....");
 
-  const prompt = `You are an expert visual editor.
+  const prompt = `You are a professional visual editor and creative copywriter.
 
-Task: Replace the main product or object in the first image (a Facebook ad creative) with the product or object from the second image (a product photo), while keeping everything else in the first image exactly the same.
+Task: Replace the product or main visual element in the first image (a Facebook ad creative) with the product from the second image (a standalone product photo), while:
 
-🎯 Goals:
-- Do not change the style, colors, layout, lighting, background, fonts, text, or any other visual elements in the Facebook ad.
-- Only swap the product/element while ensuring it matches the angle, lighting, and scale of the original.
-- Maintaining the original dimensions — Ensure the output image has the exact same dimensions as the first image (the Facebook ad creative). Do not crop, resize, or change the aspect ratio.
-- The final result must look like a natural, high-quality Facebook ad creative for the second product.
+Preserving the original design — Do not alter the layout, color scheme, theme, background, lighting, or any other design elements of the Facebook ad creative.
+
+Adapting the ad copy — Update any text/copywriting (e.g., headline, subheadline, CTA) in the Facebook ad so it is relevant and persuasive for the new product from the second image.
+
+Maintaining the original dimensions — Ensure the output image has the **exact same dimensions** as the first image (the Facebook ad creative). Do not crop, resize, or change the aspect ratio.
 
 📥 Inputs:
-Image 1: Facebook ad creative (the template to preserve).
-Image 2: Product image (the element to insert).
 
-📤 Output: One realistic image that looks exactly like the original Facebook ad but featuring the product from the second image in place of the first.
+Image 1: Facebook ad creative (layout + original product + original copy).
+
+Image 2: Product image (the new item to be featured).
+
+📤 Output: One seamless Facebook ad creative that:
+
+Features the product from Image 2, replacing the original product.
+
+Retains the style and visual structure of the original ad.
+
+Contains new copywriting that matches the tone and purpose of the ad but is now relevant to the new product.
+
+Preserves the exact original dimensions of the Facebook ad creative.
 
 ${
   additionalPrompts
