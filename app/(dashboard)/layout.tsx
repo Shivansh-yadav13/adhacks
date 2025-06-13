@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hackads",
+  title: "Artistry",
   description: "Generate Winning Ad Creatives with AI",
 };
 

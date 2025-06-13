@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./Button";
+// import BuyCreditsPage from "../(dashboard)/dashboard/buy-credits/page";
 
 export default function Pricing() {
   return (
@@ -7,10 +8,10 @@ export default function Pricing() {
       {/* Left: Plan name, description, button */}
       <div className="flex-1 flex flex-col items-start justify-center gap-6 md:pl-8">
         <h2 className="text-5xl font-[var(--font-instrument-serif)] text-white">
-          Basic
+          Pay for what you use
         </h2>
         <p className="text-gray-300 text-lg max-w-md">
-          Perfect for beginners and casual users.
+          No subscription required. Pay for what you use.
         </p>
         <Button className="w-full max-w-xs mt-4" variant="primary">
           Get Started
@@ -18,11 +19,11 @@ export default function Pricing() {
       </div>
       {/* Right: Price and features */}
       <div className="flex-1 flex flex-col items-start justify-center gap-6 md:pl-8">
-        <div className="text-4xl font-bold text-white mb-2">10 credits</div>
+        <div className="text-4xl font-bold text-white mb-2">1 Credit</div>
         <div className="text-lg text-gray-300 mb-4">for 1 AI ad creative</div>
         <div className="text-gray-400 text-base flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-green-400">✓</span>1 AI ad creative = 10
+            <span className="text-green-400">✓</span>1 AI ad creative = 1
             credits
           </div>
           <div className="flex items-center gap-2">

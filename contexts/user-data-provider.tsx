@@ -12,7 +12,7 @@ export const UserDataProvider = ({
   children: React.ReactNode;
 }) => {
   const { user, isLoaded, isSignedIn } = useUser();
-  const { createUser, setUser } = useUserStore();
+  const { createUser, setUser, fetchCredits } = useUserStore();
 
   useEffect(() => {
     console.log(user);
@@ -39,12 +39,14 @@ export const UserDataProvider = ({
           name: user.fullName,
           profileUrl: user.imageUrl,
         });
+        fetchCredits(user.id);
         return;
       }
 
       // same user
       if (localUser.id === user.id) {
         setUser(localUser);
+        fetchCredits(user.id);
         return;
       }
     }

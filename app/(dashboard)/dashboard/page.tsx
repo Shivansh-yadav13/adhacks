@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MasonryGrid from "@/app/components/dashboard/MasonryGrid";
 import AdForm from "@/app/components/dashboard/AdForm";
 import { Telescope, WandSparkles } from "lucide-react";
@@ -73,13 +73,19 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-4 w-full p-4 m-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-semibold flex items-center gap-2">
-          <WandSparkles className="w-6 h-6" />
-          Create Ad
-        </h2>
-        <CreditsBadge credits={user?.credits || 0} />
+        <div className="flex flex-col gap-2">
+          <h2 className="text-3xl font-semibold flex items-center gap-2">
+            <WandSparkles className="w-6 h-6" />
+            Create Ad
+          </h2>
+          <p className="text-zinc-400">Create professional ads in seconds</p>
+        </div>
+
+        <CreditsBadge credits={user?.credits} />
       </div>
-      <AdForm adImage={adImage} setAdImage={setAdImage} />
+      <div className="my-2 border-t border-zinc-900 pt-4">
+        <AdForm adImage={adImage} setAdImage={setAdImage} />
+      </div>
       <div className="flex items-center justify-between my-4 border-t border-zinc-900 pt-4">
         <div className="flex flex-col gap-2">
           <h3 className="text-3xl font-semibold flex items-center gap-2">

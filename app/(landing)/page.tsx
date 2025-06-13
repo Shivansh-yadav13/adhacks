@@ -4,6 +4,7 @@ import CreativesCarousel from "../components/CreativesCarousel";
 import VerticalCarousel from "../components/VerticalCarousel";
 import CallToAction from "../components/CallToAction";
 import Pricing from "../components/Pricing";
+// import BuyCreditsPage from "../(dashboard)/dashboard/buy-credits/page";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
           <CreativesCarousel />
           {/* <VerticalCarousel /> */}
           <Pricing />
+          {/* <BuyCreditsPage /> */}
           <CallToAction />
         </div>
       </div>

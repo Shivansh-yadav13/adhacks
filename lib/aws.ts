@@ -2,6 +2,7 @@ import {
   S3Client,
   GetObjectCommand,
   PutObjectCommand,
+  ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -28,14 +29,40 @@ const putObjectUrl = async (
   return url;
 };
 
-const getObjectUrl = async (userId: string, creativeId: string) => {
+// const getObjectUrl = async (userId: string, creativeId: string) => {
+//   const command = new GetObjectCommand({
+//     Bucket: "adhacks-private",
+//     Key: `${userId}/creatives/${creativeId}.png`,
+//   });
+
+//   const url = await getSignedUrl(s3Client, command);
+//   return url;
+// };
+
+const getObjectUrl = async (key: string) => {
   const command = new GetObjectCommand({
     Bucket: "adhacks-private",
-    Key: `${userId}/creatives/${creativeId}.png`,
+    Key: key,
   });
 
-  const url = await getSignedUrl(s3Client, command, { expiresIn: 20 });
+  const url = await getSignedUrl(s3Client, command);
   return url;
 };
 
-export { putObjectUrl, getObjectUrl };
+const listObjects = async (userId: string) => {
+  const command = new ListObjectsV2Command({
+    Bucket: "adhacks-private",
+    Prefix: `${userId}/creatives/`,
+  });
+
+  const response = await s3Client.send(command);
+
+  // get signed url for each object
+  const signedUrls = await Promise.all(
+    response.Contents?.map((object) => getObjectUrl(object.Key!)) || []
+  );
+
+  return signedUrls;
+};
+
+export { putObjectUrl, getObjectUrl, listObjects };

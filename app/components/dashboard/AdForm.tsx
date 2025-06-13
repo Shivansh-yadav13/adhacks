@@ -7,7 +7,7 @@ import { ImagePlus, BotMessageSquare, Image, Download } from "lucide-react";
 import { generateAdCreative } from "@/lib/openai";
 import { putObjectUrl } from "@/lib/aws";
 import { useUserStore } from "@/store/user-store";
-import { useCreativeStore } from "@/store/creative-store";
+import PixelatedLoader from "./PixelatedLoader";
 
 export default function AdForm({
   adImage,
@@ -16,13 +16,13 @@ export default function AdForm({
   adImage: string | null;
   setAdImage: (image: string | null) => void;
 }) {
-  const { user } = useUserStore();
-  const { createCreative } = useCreativeStore();
+  const { user, reduceCredits } = useUserStore();
   const [productImage, setProductImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState("");
   const [generatedAd, setGeneratedAd] = useState<string | null>(null);
   const adInputRef = useRef<HTMLInputElement>(null);
   const productInputRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -61,41 +61,57 @@ export default function AdForm({
       return;
     }
 
-    console.log("calling openai");
-
-    const generatedAd = await generateAdCreative(adImage, productImage, prompt);
-
-    if (generatedAd) {
-      setGeneratedAd(URL.createObjectURL(generatedAd));
+    if (!user.credits || user.credits < 1) {
+      alert("You don't have enough credits");
+      return;
     }
 
-    const creativeId = crypto.randomUUID();
+    // setLoading(true);
 
-    const awsS3Url = await putObjectUrl(user.id, creativeId, "image/png");
+    // await reduceCredits(user.id, 1);
 
-    try {
-      const awsResponse = await axios.put(awsS3Url, generatedAd, {
-        headers: {
-          "Content-Type": "image/png",
-        },
-      });
+    // console.log("calling openai");
 
-      console.log(awsResponse.data);
+    // const generatedAd = await generateAdCreative(adImage, productImage, prompt);
 
-      createCreative({
-        id: creativeId,
-        userId: user.id,
-        prompt: prompt || "",
-      });
+    // if (generatedAd) {
+    //   setGeneratedAd(URL.createObjectURL(generatedAd));
+    // }
 
-      // create a creative store in zustand and store this inside it.
-    } catch (error) {
-      console.error(error);
-    }
+    // const creativeId = crypto.randomUUID();
+
+    // const awsS3Url = await putObjectUrl(user.id, creativeId, "image/png");
+
+    // try {
+    //   const awsResponse = await axios.put(awsS3Url, generatedAd, {
+    //     headers: {
+    //       "Content-Type": "image/png",
+    //     },
+    //   });
+
+    //   console.log(awsResponse.data);
+
+    //   const creative = {
+    //     id: creativeId,
+    //     userId: user.id,
+    //     prompt: prompt || "",
+    //   };
+
+    //   const createdCreative = await axios.post(
+    //     "/api/creative/create",
+    //     creative
+    //   );
+
+    //   console.log(createdCreative.data);
+    // } catch (error) {
+    //   console.error(error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
-    <div className="flex justify-between gap-6">
+    <div className="flex justify-between gap-6 my-4">
       <form
         className="flex flex-col gap-6 w-1/2"
         onSubmit={(e) => {
@@ -192,8 +208,32 @@ export default function AdForm({
         </div>
       </form>
       <div className="w-1/2 flex items-center justify-center">
-        <div className="w-11/12 h-11/12 rounded-lg border-2 border-dashed border-zinc-600 flex items-center justify-center relative">
-          {generatedAd ? (
+        <div
+          className={`w-full h-96 rounded-lg border-2 ${
+            loading ? "border-transparent" : "border-dashed border-zinc-600"
+          } flex items-center justify-center relative`}
+        >
+          {loading && adImage ? (
+            <div className="relative w-full h-full flex items-center justify-center">
+              <img
+                src={adImage}
+                alt="Ad Preview"
+                className="w-full h-full object-contain filter blur-md"
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30">
+                <span className="text-white/80 text-sm font-medium">
+                  Generating your ad...
+                </span>
+              </div>
+            </div>
+          ) : loading ? (
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <PixelatedLoader />
+              <div className="mt-4 text-white/80 text-sm font-medium">
+                Generating your ad...
+              </div>
+            </div>
+          ) : generatedAd ? (
             <>
               <img
                 src={generatedAd}

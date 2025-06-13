@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
+import ParticleBackground from "../components/ParticleBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +24,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Hackads",
+  title: "Artistry",
   description: "Generate Winning Ad Creatives with AI",
 };
 
@@ -39,7 +40,8 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
         >
           <div className="inset-0 -z-10">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(255,255,255,0.95)_0%,rgba(127,211,255,0.55)_20%,rgba(96,170,255,0.35)_40%,rgba(10,13,16,0.95)_70%)]"></div>
+            <ParticleBackground />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(255,255,255,0.95)_0%,rgba(96,165,250,0.55)_20%,rgba(59,130,246,0.35)_40%,rgba(10,13,16,0.95)_70%)]"></div>
           </div>
           <Navbar />
           <Container>{children}</Container>

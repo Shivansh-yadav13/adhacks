@@ -4,13 +4,19 @@ import React from "react";
 import { motion, useAnimationFrame } from "framer-motion";
 
 const images = [
-  "/ads/ad1.jpg",
-  "/ads/ad1.jpg",
-  "/ads/ad1.jpg",
-  "/ads/ad1.jpg",
-  "/ads/ad1.jpg",
-  "/ads/ad1.jpg",
-  "/ads/ad1.jpg",
+  "/ads/ad2.png",
+  "/ads/ad3.png",
+  "/ads/ad4.png",
+  "/ads/ad5.png",
+  "/ads/ad6.png",
+  "/ads/ad7.png",
+  "/ads/ad8.png",
+  "/ads/ad9.png",
+  "/ads/ad10.png",
+  "/ads/ad11.png",
+  "/ads/ad12.png",
+  "/ads/ad13.png",
+  "/ads/ad14.png",
 ];
 
 // Duplicate images for seamless looping

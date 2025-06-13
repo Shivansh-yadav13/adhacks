@@ -15,7 +15,7 @@ import {
   Image as ImageIcon,
   Settings,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Button from "@/app/components/Button";
 
 const links = [
@@ -34,20 +34,24 @@ const links = [
 export const Sidebar = () => {
   const { user } = useUserStore();
   const pathname = usePathname();
-
-  console.log(user);
-
+  const router = useRouter();
   return (
     <div className="sticky top-0 left-0 h-screen w-64 border-r border-zinc-900 flex flex-col p-6">
       {/* Logo and Brand */}
       <div className="flex items-center gap-3 mb-8">
         <Link
           href="/"
-          className="bg-gradient-to-br from-neutral-800 via-slate-900 to-blue-900 rounded-2xl p-4 shadow-inner flex items-center justify-center"
+          // className="bg-gradient-to-br from-neutral-800 via-slate-900 to-blue-900 rounded-2xl p-4 shadow-inner flex items-center justify-center"
         >
-          <Sparkles className="w-4 h-4 text-white" />
+          <Image
+            src="/adistry_logo.png"
+            alt="logo"
+            width={100}
+            height={100}
+            className="w-10 h-10 text-white"
+          />
         </Link>
-        <h2 className="text-xl font-bold text-white">AdHacks</h2>
+        <h2 className="text-xl font-bold text-white">Artistry</h2>
       </div>
 
       {/* Navigation Links */}
@@ -84,7 +88,7 @@ export const Sidebar = () => {
             <Button
               className="w-full bg-blue-600 hover:bg-blue-700 text-sm"
               onClick={() => {
-                // TODO: Implement add credits functionality
+                router.push("/dashboard/buy-credits");
               }}
             >
               Add Credits
