@@ -21,7 +21,14 @@ export async function POST(request: NextRequest) {
     data: {
       credits: newCredits,
     },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      profileUrl: true,
+      credits: true,
+    },
   });
 
-  return NextResponse.json({ credits: updatedUser.credits });
+  return NextResponse.json({ user: updatedUser });
 }

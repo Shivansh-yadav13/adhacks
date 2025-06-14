@@ -52,7 +52,7 @@ export const useUserStore = create<UserState>((set, get) => ({
         amount,
         userId: id,
       });
-      set({ user: updatedUser.data });
+      set({ user: updatedUser.data.user });
     } catch (error) {
       console.error("Failed to reduce credits", error);
     }
