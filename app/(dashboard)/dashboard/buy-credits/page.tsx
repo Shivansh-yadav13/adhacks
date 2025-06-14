@@ -1,49 +1,35 @@
 "use client";
 import React from "react";
 import Button from "@/app/components/Button";
+import { useRouter } from "next/navigation";
 
 const pricingPlans = [
   {
     name: "Starter",
     price: 5,
     totalCredits: 20,
-    id: "pdt_YycnrGgmcWH8kJZzmMDUZ",
+    id: "pdt_WxhTITUTa7gLcEv2gOkc1",
   },
   {
     name: "Pro",
     price: 10,
     totalCredits: 42,
-    id: "pdt_RTbvBgpuKeKD71fIdmRvw",
+    id: "pdt_ifCPWINqz0uIbPi37pFYT",
   },
   {
     name: "Power",
     price: 20,
     totalCredits: 90,
-    id: "pdt_mAL8Tdam5yeCOH6kwz8tI",
+    id: "pdt_9tfdVBGgBRz5XTl1xBeKB",
   },
 ];
 
 export default function BuyCreditsPage() {
-  // const router = useRouter();
+  const router = useRouter();
 
-  // const checkoutProduct = async (
-  //   productId: string,
-  //   useDynamicPaymentLinks: boolean = true
-  // ) => {
-  //   if (useDynamicPaymentLinks) {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout?productId=${productId}`,
-  //       {
-  //         cache: "no-store",
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     // router.push(data.payment_link);
-  //   } else {
-  //     let checkoutUrl = `https://test.checkout.dodopayments.com/buy/${productId}?quantity=1&redirect_url=${process.env.NEXT_PUBLIC_BASE_URL}`;
-  //     // router.push(checkoutUrl);
-  //   }
-  // };
+  const handleBuyNow = (productId: string) => {
+    router.push(`/dashboard/checkout?productId=${productId}`);
+  };
 
   return (
     <div className="mx-auto flex flex-col items-center justify-center my-20">
@@ -84,13 +70,7 @@ export default function BuyCreditsPage() {
                 <span className="text-zinc-300">Pay as you go</span>
               </li>
             </ul>
-            <Button
-              onClick={() => {
-                // checkoutProduct(plan.id, true);
-              }}
-            >
-              Buy Now
-            </Button>
+            <Button onClick={() => handleBuyNow(plan.id)}>Buy Now</Button>
           </div>
         ))}
       </div>

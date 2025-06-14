@@ -7,6 +7,7 @@ interface User {
   name?: string | null;
   profileUrl?: string | null;
   credits?: number;
+  dodoCustomerId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
