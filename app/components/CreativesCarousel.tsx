@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion, useAnimationFrame } from "framer-motion";
+import { fadeInUp } from "@/lib/animation";
 
 const images = [
   "/ads/ad2.png",
@@ -42,7 +43,29 @@ export default function CreativesCarousel() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 overflow-hidden w-full py-8">
-      <motion.div className="flex gap-6" style={{ x }}>
+      <motion.h2
+        initial={fadeInUp.initial}
+        whileInView={fadeInUp.animate}
+        transition={fadeInUp.transition}
+        className="text-6xl font-bold"
+      >
+        100+ Winning Creatives
+      </motion.h2>
+      <motion.p
+        initial={fadeInUp.initial}
+        whileInView={fadeInUp.animate}
+        transition={fadeInUp.transition}
+        className="text-lg text-slate-400"
+      >
+        Get Inspired from our database of 100+ Winning Creatives
+      </motion.p>
+      <motion.div
+        initial={fadeInUp.initial}
+        whileInView={fadeInUp.animate}
+        transition={fadeInUp.transition}
+        className="flex gap-6"
+        style={{ x }}
+      >
         {carouselImages.map((src, idx) => (
           <div
             key={idx}

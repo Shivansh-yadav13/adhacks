@@ -37,6 +37,7 @@ export const Sidebar = () => {
   const { user } = useUserStore();
   const pathname = usePathname();
   const router = useRouter();
+  if (!user) return null;
   return (
     <div className="sticky top-0 left-0 h-screen w-64 border-r border-zinc-900 flex flex-col p-6">
       {/* Logo and Brand */}

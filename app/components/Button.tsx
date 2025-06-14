@@ -2,6 +2,7 @@
 import React from "react";
 import clsx from "clsx";
 import { motion, HTMLMotionProps } from "motion/react";
+import { fadeInUp } from "../../lib/animation";
 
 interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
   variant?: "primary" | "light" | "dark";
@@ -28,14 +29,11 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <motion.button
       className={clsx(baseStyles, variantStyles[variant], className)}
-      initial={{ y: 20, opacity: 0, filter: "blur(10px)" }}
-      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+      initial={fadeInUp.initial}
+      animate={fadeInUp.animate}
+      transition={fadeInUp.transition}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      transition={{
-        duration: 0.8,
-        ease: [0.4, 0, 0.2, 1],
-      }}
       {...props}
     >
       {children}

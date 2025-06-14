@@ -3,8 +3,10 @@
 import React from "react";
 import Button from "./Button";
 import Image from "next/image";
+import Link from "next/link";
 import { Video } from "lucide-react";
 import { motion } from "motion/react";
+import { fadeInUp } from "@/lib/animation";
 
 const Hero = () => {
   return (
@@ -34,12 +36,25 @@ const Hero = () => {
         Use AI to generate proven ad creatives for your business.
       </motion.p>
       <div className="flex justify-center gap-4">
-        <Button>Get Started</Button>
-        <Button className="flex items-center gap-2" variant="dark">
+        <Link href="/dashboard">
+          <Button>Get Started</Button>
+        </Link>
+        <Button
+          className="flex items-center gap-2"
+          variant="dark"
+          onClick={() => {
+            window.location.href = "#demo";
+          }}
+        >
           <Video /> Watch Demo
         </Button>
       </div>
-      <p className="flex items-center justify-center gap-2 text-center text-sm text-gray-400">
+      <motion.p
+        initial={fadeInUp.initial}
+        animate={fadeInUp.animate}
+        transition={fadeInUp.transition}
+        className="flex items-center justify-center gap-2 text-center text-sm text-gray-400"
+      >
         Powered by{" "}
         <a href="https://openai.com" className="text-blue-500">
           <Image
@@ -53,19 +68,17 @@ const Hero = () => {
             }}
           />
         </a>
-      </p>
+      </motion.p>
       <motion.div
-        initial={{ y: 0 }}
-        animate={{ y: [0, -20, 0] }}
+        initial={{ y: 100, opacity: 0, filter: "blur(10px)" }}
+        animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
         transition={{
           duration: 2,
           ease: "easeInOut",
-          repeat: Infinity,
-          repeatType: "loop",
         }}
       >
         <Image
-          src="/hero.avif"
+          src="/hero.png"
           alt="Hero Image"
           width={620}
           height={620}

@@ -1,10 +1,19 @@
+"use client";
 import React from "react";
 import Button from "./Button";
+import { motion } from "motion/react";
+import { fadeInUp } from "@/lib/animation";
+import Link from "next/link";
 // import BuyCreditsPage from "../(dashboard)/dashboard/buy-credits/page";
 
 export default function Pricing() {
   return (
-    <div className="w-full mx-auto bg-zinc-900/80 rounded-3xl shadow-2xl px-8 py-12 flex flex-col md:flex-row items-center gap-8 md:gap-0 relative overflow-hidden mt-12">
+    <motion.div
+      initial={fadeInUp.initial}
+      whileInView={fadeInUp.animate}
+      transition={fadeInUp.transition}
+      className="w-full mx-auto bg-zinc-900/80 rounded-3xl shadow-2xl px-8 py-12 flex flex-col md:flex-row items-center gap-8 md:gap-0 relative overflow-hidden mt-12"
+    >
       {/* Left: Plan name, description, button */}
       <div className="flex-1 flex flex-col items-start justify-center gap-6 md:pl-8">
         <h2 className="text-5xl font-[var(--font-instrument-serif)] text-white">
@@ -13,9 +22,11 @@ export default function Pricing() {
         <p className="text-gray-300 text-lg max-w-md">
           No subscription required. Pay for what you use.
         </p>
-        <Button className="w-full max-w-xs mt-4" variant="primary">
-          Get Started
-        </Button>
+        <Link href="/dashboard">
+          <Button className="w-full max-w-xs mt-4" variant="primary">
+            Get Started
+          </Button>
+        </Link>
       </div>
       {/* Right: Price and features */}
       <div className="flex-1 flex flex-col items-start justify-center gap-6 md:pl-8">
@@ -36,6 +47,6 @@ export default function Pricing() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -41,7 +41,7 @@ export default function RootLayout({
         >
           <div className="inset-0 -z-10">
             <ParticleBackground />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(255,255,255,0.95)_0%,rgba(96,165,250,0.55)_20%,rgba(59,130,246,0.35)_40%,rgba(10,13,16,0.95)_70%)]"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(150,200,255,0.95)_0%,rgba(96,165,250,0.55)_20%,rgba(59,130,246,0.35)_40%,rgba(10,13,16,0.95)_70%)]"></div>
           </div>
           <Navbar />
           <Container>{children}</Container>
